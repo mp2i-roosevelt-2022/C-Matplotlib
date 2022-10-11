@@ -12,6 +12,11 @@ set_option(BUILD_TEST OFF BOOL "Build test code for library")
 
 set_choice (CMAKE_BUILD_TYPE "Debug;Release;MinSizeRel;RelWithDebInfo" "Debug" "Choose type of build")
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SDL2)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
 set (SRCS
 
 )
@@ -30,7 +35,7 @@ set (CMAKE_C_STANDARD 17)
 set (CMAKE_C_STANDARD_REQUIRED ON)
 
 add_library (${PROJECT_NAME} STATIC ${SRCS} ${HEADERS})
-target_link_libraries(${PROJECT_NAME} PRIVATE m pthread)
+target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::Core SDL2::TTF PRIVATE m pthread)
 
 foreach(header ${HEADERS})
     set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${header})
